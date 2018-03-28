@@ -17,6 +17,10 @@
     LIST: 'autocomplete__list'
   };
 
+  const ID = {
+    AUTOCOMPLETE_INPUT: 'autocomplete__input'
+  }
+
   const KEY_CODES = {
     ENTER: 13,
     ESC: 27,
@@ -56,7 +60,9 @@
         const input = evt.target.value.toLowerCase();
         this.filterResults(input);
         this.resultsNotice.textContent = input;
-        $("#achievementBackup").val(this.input.value)
+        let acInput = document.getElementById(ID.AUTOCOMPLETE_INPUT)
+        acInput.value = this.input.value
+        console.log(acInput);
       });
 
       this.input.addEventListener('focus', () => {
