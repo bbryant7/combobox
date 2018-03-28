@@ -55,6 +55,8 @@
       this.input.addEventListener('input', (evt) => {
         const input = evt.target.value.toLowerCase();
         this.filterResults(input);
+        this.resultsNotice.textContent = input;
+        $("#achievementBackup").val(this.input.value)
       });
 
       this.input.addEventListener('focus', () => {
@@ -127,12 +129,14 @@
 
     chooseOption() {
       const selectedOption = document.getElementById(this.input.dataset.selected);
-      const inputBox = this.input.value
-      // this.input.value = selectedOption.textContent;
-      this.input.value = inputBox;
-      this.select.value = selectedOption.dataset.value;
-      this.resultsNotice.textContent = `${inputBox}`;
-      // this.resultsNotice.textContent = `${selectedOption.textContent} selected`;
+      if (selectedOption) {
+        this.input.value = selectedOption.textContent;
+        this.select.value = selectedOption.dataset.value;
+        this.resultsNotice.textContent = `${selectedOption.textContent} selected`;
+      } else {
+        this.select.value = this.input.value;
+        this.resultsNotice.textContent = this.input.value;
+      }
       this.hideResults();
     }
 
@@ -167,29 +171,28 @@
       this.results = results;
     }
 
+    processResult(result) {
+      const resultListItem = document.createElement('li');
+      resultListItem.setAttribute('id', result.id || `${this.select.id}-autocomplete-result-${'new'}`);
+      resultListItem.classList.add(CLASSES.RESULT.BASE);
+      resultListItem.textContent = result.label || this.input.value;
+      resultListItem.dataset.value = result.value || this.input.value;
+      resultListItem.setAttribute('role', 'option');
+      resultListItem.addEventListener('click', (evt) => {
+        this.selectOption(evt.target, () => this.chooseOption());
+      });
+      window.requestAnimationFrame(() => {
+        this.resultsList.appendChild(resultListItem);
+      });
+    }
+
     outputResults() {
       if (this.results.length > 0) {
         this.results.forEach((result) => {
-          const resultListItem = document.createElement('li');
-          resultListItem.setAttribute('id', result.id);
-          resultListItem.classList.add(CLASSES.RESULT.BASE);
-          resultListItem.textContent = result.label;
-          resultListItem.dataset.value = result.value;
-          resultListItem.setAttribute('role', 'option');
-          resultListItem.addEventListener('click', (evt) => {
-            this.selectOption(evt.target, () => this.chooseOption());
-          });
-          window.requestAnimationFrame(() => {
-            this.resultsList.appendChild(resultListItem);
-          });
+          this.processResult(result)
         });
       } else {
-        const noResultsItem = document.createElement('li');
-        noResultsItem.classList.add(CLASSES.RESULT.BASE);
-        noResultsItem.textContent = 'No results found';
-        window.requestAnimationFrame(() => {
-          this.resultsList.appendChild(noResultsItem);
-        });
+        this.processResult(this.input.value)
       }
       this.showResults();
     }
@@ -200,7 +203,7 @@
         this.resultsList.classList.add(CLASSES.RESULTS.VISIBLE);
         this.input.setAttribute('aria-expanded', 'true');
         if (this.results.length === 0) {
-          this.resultsNotice.textContent = `No results found`;
+          this.resultsNotice.textContent = this.input.value;
         } else if (this.results.length === 1) {
           this.resultsNotice.textContent = '1 result';
         } else {

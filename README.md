@@ -28,6 +28,22 @@ Make sure your select is wrapped in a container and it has a label within that c
 </div>
 ```
 
+### For Free Input
+
+Do the following. Note `:input_field` can be named something more specific to your case. `autocomplete__input` is a required id name, however.
+
+```Model.rb
+  attr_accessor :input_field
+```
+
+```Controller.rb
+  params[:input_field]
+```
+
+```view.html.erb
+  <%= hidden_field :input_field, id: "autocomplete__input" %>
+```
+
 [View on CodePen](http://codepen.io/dfmcphee/pen/EyLbgB)
 
 ## Development
