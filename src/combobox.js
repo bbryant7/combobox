@@ -127,11 +127,12 @@
 
     chooseOption() {
       const selectedOption = document.getElementById(this.input.dataset.selected);
-      console.log(this.input);
-      // const inputBox = document.getElementById()
-      this.input.value = selectedOption.textContent;
+      const inputBox = this.input.value
+      // this.input.value = selectedOption.textContent;
+      this.input.value = inputBox;
       this.select.value = selectedOption.dataset.value;
-      this.resultsNotice.textContent = `${selectedOption.textContent} selected`;
+      this.resultsNotice.textContent = `${inputBox}`;
+      // this.resultsNotice.textContent = `${selectedOption.textContent} selected`;
       this.hideResults();
     }
 
