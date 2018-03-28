@@ -130,6 +130,8 @@
       this.input.value = selectedOption.textContent;
       this.select.value = selectedOption.dataset.value;
       this.resultsNotice.textContent = `${selectedOption.textContent} selected`;
+      console.log(selectedOption);
+      console.log(this);
       this.hideResults();
     }
 
