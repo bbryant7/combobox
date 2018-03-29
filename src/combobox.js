@@ -80,8 +80,8 @@
 
       document.body.addEventListener('click', (evt) => {
         if (!this.container.contains(evt.target)) {
+          this.chooseOption();
           this.hideResults();
-          this.chooseOption()
         }
       });
 
