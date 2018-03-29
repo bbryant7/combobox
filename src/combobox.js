@@ -85,6 +85,7 @@
       });
 
       window.addEventListener('keydown', (evt) => this.keydownEvent(evt));
+      window.addEventListener('keyup', () => this.keyupEvent());
     }
 
     clearSelected() {
@@ -251,6 +252,10 @@
       window.requestAnimationFrame(() => {
         this.container.appendChild(this.resultsNotice);
       });
+    }
+
+    keyupEvent() {
+      this.chooseOption()
     }
 
     keydownEvent(evt) {
