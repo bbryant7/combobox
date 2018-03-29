@@ -257,15 +257,14 @@
       if (!this.container.contains(evt.target)) {
         return;
       }
-      this.chooseOption()
       switch (evt.keyCode) {
         case KEY_CODES.ENTER:
           evt.preventDefault();
-          break;
-        case KEY_CODES.TAB:
+          this.chooseOption()
           break;
         case KEY_CODES.ESC:
           this.hideResults();
+          this.chooseOption()
           this.input.blur();
           break;
         case KEY_CODES.DOWN:
@@ -279,11 +278,11 @@
         case KEY_CODES.UP:
           this.selectPreviousOption();
           break;
+        default:
+          this.chooseOption()
       }
     }
   }
-
-
 
   function createAutocomplete(node) {
     return new Autocomplete(node);
