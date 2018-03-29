@@ -257,13 +257,12 @@
     }
 
     keydownEvent(evt) {
-      evt.stopPropagation();
-      evt.preventDefault();
       if (!this.container.contains(evt.target)) {
         return;
       }
       switch (evt.keyCode) {
         case KEY_CODES.ENTER:
+          evt.preventDefault();
           this.chooseOption();
           break;
         case KEY_CODES.TAB:
@@ -274,6 +273,7 @@
           this.input.blur();
           break;
         case KEY_CODES.DOWN:
+          evt.stopPropagation();
           if (!this.isVisible) {
             this.showResults();
           } else {
@@ -282,6 +282,7 @@
           evt.preventDefault();
           break;
         case KEY_CODES.UP:
+          evt.stopPropagation();
           evt.preventDefault();
           this.selectPreviousOption();
           break;
