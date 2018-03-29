@@ -85,7 +85,6 @@
       });
 
       window.addEventListener('keydown', (evt) => this.keydownEvent(evt));
-      window.addEventListener('keyup', () => this.keyupEvent());
     }
 
     clearSelected() {
@@ -254,21 +253,16 @@
       });
     }
 
-    keyupEvent() {
-      this.chooseOption()
-    }
-
     keydownEvent(evt) {
       if (!this.container.contains(evt.target)) {
         return;
       }
+      this.chooseOption()
       switch (evt.keyCode) {
         case KEY_CODES.ENTER:
           evt.preventDefault();
-          this.chooseOption();
           break;
         case KEY_CODES.TAB:
-          this.chooseOption();
           break;
         case KEY_CODES.ESC:
           this.hideResults();
