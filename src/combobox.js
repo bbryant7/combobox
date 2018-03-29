@@ -81,6 +81,7 @@
       document.body.addEventListener('click', (evt) => {
         if (!this.container.contains(evt.target)) {
           this.hideResults();
+          this.chooseOption()
         }
       });
 
