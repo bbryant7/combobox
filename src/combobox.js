@@ -63,7 +63,6 @@
         this.resultsNotice.textContent = input;
         let acInput = document.getElementById(ID.AUTOCOMPLETE_INPUT)
         acInput.value = this.input.value
-        console.log(acInput);
       });
 
       this.input.addEventListener('focus', () => {
@@ -85,9 +84,7 @@
         }
       });
 
-      document.addEventListener('keydown', (evt) => {
-        this.keydownEvent(evt);
-      });
+      window.addEventListener('keydown', (evt) => this.keydownEvent(evt));
     }
 
     clearSelected() {
@@ -273,7 +270,6 @@
           this.input.blur();
           break;
         case KEY_CODES.DOWN:
-          evt.stopPropagation();
           if (!this.isVisible) {
             this.showResults();
           } else {
@@ -282,13 +278,13 @@
           evt.preventDefault();
           break;
         case KEY_CODES.UP:
-          evt.stopPropagation();
-          evt.preventDefault();
           this.selectPreviousOption();
           break;
       }
     }
   }
+
+
 
   function createAutocomplete(node) {
     return new Autocomplete(node);
