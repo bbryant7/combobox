@@ -25,7 +25,8 @@
     ENTER: 13,
     ESC: 27,
     UP: 38,
-    DOWN: 40
+    DOWN: 40,
+    TAB: 9
   }
 
   class Autocomplete {
@@ -261,6 +262,9 @@
       }
       switch (evt.keyCode) {
         case KEY_CODES.ENTER:
+          this.chooseOption();
+          break;
+        case KEY_CODES.TAB:
           this.chooseOption();
           break;
         case KEY_CODES.ESC:
