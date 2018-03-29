@@ -30,6 +30,16 @@ $border-radius: 3px;
   opacity: 0;
   border: 1px solid;
   border-radius: $border-radius;
+  max-height: 0rem;
+  &.autocomplete__results--is-visible {
+    max-height: 13rem;
+  }
+  .autocomplete__result {
+    &.autocomplete__result--is-selected {
+      background: $selected-background;
+    }
+  }
+
 }
 
 .autocomplete__results--is-visible {
@@ -43,6 +53,7 @@ $border-radius: 3px;
   margin: 0;
   padding: 0.5rem 1rem;
   cursor: pointer;
+  background: white;
 
   + .autocomplete__result {
     border-top: 1px solid;
