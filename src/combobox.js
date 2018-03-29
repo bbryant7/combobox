@@ -257,6 +257,8 @@
     }
 
     keydownEvent(evt) {
+      evt.stopPropagation();
+      evt.preventDefault();
       if (!this.container.contains(evt.target)) {
         return;
       }
