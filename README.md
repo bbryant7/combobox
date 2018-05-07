@@ -1,6 +1,6 @@
 # Combobox
 
-Combobox is a JavaScript plugin that will automatically turn a regular ol‘ `select` element into an autocomplete. It is only __6KB__ minified and doesn‘t have any dependencies. It comes with some default styles, but provides markup that can be easily customized if needed. It was built with accesibility in mind and makes full use of ARIA attributes and roles to be screen reader friendly.
+Combobox is a JavaScript plugin that will automatically turn a regular ol‘ `select` element into an autocomplete. It is only **6KB** minified and doesn‘t have any dependencies. It comes with some default styles, but provides markup that can be easily customized if needed. It was built with accesibility in mind and makes full use of ARIA attributes and roles to be screen reader friendly.
 
 ## Getting started
 
@@ -17,6 +17,7 @@ Add a new `<select>` element with the class `autocomplete`.
 Make sure your select is wrapped in a container and it has a label within that container.
 
 ### Example:
+
 ```
 <div>
   <label for="example">Example</label>
@@ -47,4 +48,10 @@ Do the following. Note `:input_field` can be named something more specific to yo
 [View on CodePen](http://codepen.io/dfmcphee/pen/EyLbgB)
 
 ## Development
+
 `npm install && gulp`
+
+## Build
+
+Build js file: `gulp js`
+Build scss file: `gulp sass`

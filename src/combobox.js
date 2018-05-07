@@ -1,25 +1,25 @@
-(function(){
+(function() {
   const CLASSES = {
-    BASE: 'autocomplete',
-    CONTAINER: 'autocomplete-container',
-    INPUT: 'autocomplete__input',
-    LABEL: 'autocomplete__label',
+    BASE: "autocomplete",
+    CONTAINER: "autocomplete-container",
+    INPUT: "autocomplete__input",
+    LABEL: "autocomplete__label",
     RESULTS: {
-      BASE: 'autocomplete__results',
-      VISIBLE: 'autocomplete__results--is-visible'
+      BASE: "autocomplete__results",
+      VISIBLE: "autocomplete__results--is-visible"
     },
     RESULT: {
-      BASE: 'autocomplete__result',
-      SELECTED: 'autocomplete__result--is-selected'
+      BASE: "autocomplete__result",
+      SELECTED: "autocomplete__result--is-selected"
     },
-    NOTICE: 'autocomplete__notice',
-    SELECT_RESULT: 'autocomplete__select-result',
-    LIST: 'autocomplete__list'
+    NOTICE: "autocomplete__notice",
+    SELECT_RESULT: "autocomplete__select-result",
+    LIST: "autocomplete__list"
   };
 
   const ID = {
-    AUTOCOMPLETE_INPUT: 'autocomplete__input'
-  }
+    AUTOCOMPLETE_INPUT: "autocomplete__input"
+  };
 
   const KEY_CODES = {
     ENTER: 13,
@@ -27,17 +27,19 @@
     UP: 38,
     DOWN: 40,
     TAB: 9
-  }
+  };
 
   class Autocomplete {
     constructor(node) {
       this.select = node;
-      this.select.style.display = 'none';
+      this.select.style.display = "none";
       this.container = this.select.parentElement;
       this.container.classList.add(CLASSES.CONTAINER);
-      this.container.style.position = 'relative';
-      this.label = this.container.querySelector('label');
-      const selectOptions = [].slice.call(node.querySelectorAll('option'));
+      this.container.style.position = "relative";
+      this.label =
+        this.container.querySelector("label") ||
+        this.container.parentNode.querySelector("label");
+      const selectOptions = [].slice.call(node.querySelectorAll("option"));
       const resultsId = `${this.select.id}-autocomplete`;
       this.isVisible = false;
       this.options = selectOptions.map((option, index) => {
@@ -57,15 +59,15 @@
         this.container.appendChild(this.resultsList);
       });
 
-      this.input.addEventListener('input', (evt) => {
+      this.input.addEventListener("input", evt => {
         const input = evt.target.value.toLowerCase();
         this.filterResults(input);
         this.resultsNotice.textContent = input;
-        let acInput = document.getElementById(ID.AUTOCOMPLETE_INPUT)
-        acInput.value = this.input.value
+        let acInput = document.getElementById(ID.AUTOCOMPLETE_INPUT);
+        acInput.value = this.input.value;
       });
 
-      this.input.addEventListener('focus', () => {
+      this.input.addEventListener("focus", () => {
         if (this.results) {
           this.showResults();
         } else {
@@ -74,29 +76,33 @@
         }
       });
 
-      this.input.addEventListener('blur', () => {
+      this.input.addEventListener("blur", () => {
         this.hideResults();
       });
 
-      document.body.addEventListener('click', (evt) => {
+      document.body.addEventListener("click", evt => {
         if (!this.container.contains(evt.target)) {
           this.chooseOption();
           this.hideResults();
         }
       });
 
-      window.addEventListener('keydown', (evt) => this.keydownEvent(evt));
+      window.addEventListener("keydown", evt => this.keydownEvent(evt));
     }
 
     clearSelected() {
-      const selected = this.resultsList.querySelector(`.${CLASSES.RESULT.SELECTED}`);
+      const selected = this.resultsList.querySelector(
+        `.${CLASSES.RESULT.SELECTED}`
+      );
       if (selected) {
         selected.classList.remove(CLASSES.RESULT.SELECTED);
       }
     }
 
     selectPreviousOption() {
-      const selected = this.resultsList.querySelector(`.${CLASSES.RESULT.SELECTED}`);
+      const selected = this.resultsList.querySelector(
+        `.${CLASSES.RESULT.SELECTED}`
+      );
       if (selected) {
         if (selected === this.resultsList.firstChild) {
           this.selectOption(this.resultsList.lastChild);
@@ -107,7 +113,9 @@
     }
 
     selectNextOption() {
-      const selected = this.resultsList.querySelector(`.${CLASSES.RESULT.SELECTED}`);
+      const selected = this.resultsList.querySelector(
+        `.${CLASSES.RESULT.SELECTED}`
+      );
       if (selected) {
         if (selected === this.resultsList.lastChild) {
           this.selectOption(this.resultsList.firstChild);
@@ -133,11 +141,15 @@
     }
 
     chooseOption() {
-      const selectedOption = document.getElementById(this.input.dataset.selected);
+      const selectedOption = document.getElementById(
+        this.input.dataset.selected
+      );
       if (selectedOption) {
         this.input.value = selectedOption.textContent;
         this.select.value = selectedOption.dataset.value;
-        this.resultsNotice.textContent = `${selectedOption.textContent} selected`;
+        this.resultsNotice.textContent = `${
+          selectedOption.textContent
+        } selected`;
       } else {
         this.select.value = this.input.value;
         this.resultsNotice.textContent = this.input.value;
@@ -154,9 +166,11 @@
     }
 
     filterResults(input) {
-      const results = this.options.filter((result) => {
-        return (result.value.toLowerCase().indexOf(input) != -1) ||
-               (result.label.toLowerCase().indexOf(input) != -1);
+      const results = this.options.filter(result => {
+        return (
+          result.value.toLowerCase().indexOf(input) != -1 ||
+          result.label.toLowerCase().indexOf(input) != -1
+        );
       });
 
       this.updateResults(results);
@@ -167,7 +181,7 @@
       this.isVisible = false;
       window.requestAnimationFrame(() => {
         this.resultsList.classList.remove(CLASSES.RESULTS.VISIBLE);
-        this.input.setAttribute('aria-expanded', 'false');
+        this.input.setAttribute("aria-expanded", "false");
       });
     }
 
@@ -177,13 +191,16 @@
     }
 
     processResult(result) {
-      const resultListItem = document.createElement('li');
-      resultListItem.setAttribute('id', result.id || `${this.select.id}-autocomplete-result-${'new'}`);
+      const resultListItem = document.createElement("li");
+      resultListItem.setAttribute(
+        "id",
+        result.id || `${this.select.id}-autocomplete-result-${"new"}`
+      );
       resultListItem.classList.add(CLASSES.RESULT.BASE);
       resultListItem.textContent = result.label || this.input.value;
       resultListItem.dataset.value = result.value || this.input.value;
-      resultListItem.setAttribute('role', 'option');
-      resultListItem.addEventListener('click', (evt) => {
+      resultListItem.setAttribute("role", "option");
+      resultListItem.addEventListener("click", evt => {
         this.selectOption(evt.target, () => this.chooseOption());
       });
       window.requestAnimationFrame(() => {
@@ -193,11 +210,11 @@
 
     outputResults() {
       if (this.results.length > 0) {
-        this.results.forEach((result) => {
-          this.processResult(result)
+        this.results.forEach(result => {
+          this.processResult(result);
         });
       } else {
-        this.processResult(this.input.value)
+        this.processResult(this.input.value);
       }
       this.showResults();
     }
@@ -206,11 +223,11 @@
       this.isVisible = true;
       window.requestAnimationFrame(() => {
         this.resultsList.classList.add(CLASSES.RESULTS.VISIBLE);
-        this.input.setAttribute('aria-expanded', 'true');
+        this.input.setAttribute("aria-expanded", "true");
         if (this.results.length === 0) {
           this.resultsNotice.textContent = this.input.value;
         } else if (this.results.length === 1) {
-          this.resultsNotice.textContent = '1 result';
+          this.resultsNotice.textContent = "1 result";
         } else {
           this.resultsNotice.textContent = `${this.results.length} results`;
         }
@@ -218,13 +235,16 @@
     }
 
     outputInput(resultsId) {
-      this.input = document.createElement('input');
-      this.input.type = 'text';
-      this.input.setAttribute('role', 'combobox');
-      this.input.setAttribute('aria-label', `Search and select an option for ${this.label.textContent}`);
-      this.input.setAttribute('aria-expanded', 'false');
-      this.input.setAttribute('aria-autocomplete', 'list');
-      this.input.setAttribute('aria-owns', resultsId);
+      this.input = document.createElement("input");
+      this.input.type = "text";
+      this.input.setAttribute("role", "combobox");
+      this.input.setAttribute(
+        "aria-label",
+        `Search and select an option for ${this.label.textContent}`
+      );
+      this.input.setAttribute("aria-expanded", "false");
+      this.input.setAttribute("aria-autocomplete", "list");
+      this.input.setAttribute("aria-owns", resultsId);
       this.input.classList.add(CLASSES.INPUT);
 
       window.requestAnimationFrame(() => {
@@ -233,10 +253,10 @@
     }
 
     outputResultsList(resultsId) {
-      this.resultsList = document.createElement('ul');
+      this.resultsList = document.createElement("ul");
       this.resultsList.classList.add(CLASSES.RESULTS.BASE);
-      this.resultsList.setAttribute('id', resultsId);
-      this.resultsList.setAttribute('role', 'listbox');
+      this.resultsList.setAttribute("id", resultsId);
+      this.resultsList.setAttribute("role", "listbox");
 
       window.requestAnimationFrame(() => {
         this.container.appendChild(this.resultsList);
@@ -244,10 +264,10 @@
     }
 
     outputResultsNotice() {
-      this.resultsNotice = document.createElement('div');
+      this.resultsNotice = document.createElement("div");
       this.resultsNotice.classList.add(CLASSES.NOTICE);
-      this.resultsNotice.setAttribute('role', 'status');
-      this.resultsNotice.setAttribute('aria-live', 'polite');
+      this.resultsNotice.setAttribute("role", "status");
+      this.resultsNotice.setAttribute("aria-live", "polite");
 
       window.requestAnimationFrame(() => {
         this.container.appendChild(this.resultsNotice);
@@ -285,14 +305,14 @@
     }
   }
 
-
-
   function createAutocomplete(node) {
     return new Autocomplete(node);
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
-    const autocompletes = [].slice.call(document.querySelectorAll(`.${CLASSES.BASE}`));
+  document.addEventListener("DOMContentLoaded", function() {
+    const autocompletes = [].slice.call(
+      document.querySelectorAll(`.${CLASSES.BASE}`)
+    );
     autocompletes.forEach(createAutocomplete);
   });
 })();
